@@ -16,8 +16,8 @@ export class UsersService {
     return result;
   }
 
-  findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+  async findByEmail(email: string) {
+    return await this.prisma.user.findUnique({ where: { email } });
   }
 
   async findById(id: string) {
@@ -29,11 +29,11 @@ export class UsersService {
     return result;
   }
 
-  update(id: string, data: UpdateUserDto) {
-    return this.prisma.user.update({ where: { id }, data });
+  async update(id: string, data: UpdateUserDto) {
+    return await this.prisma.user.update({ where: { id }, data });
   }
 
-  delete(id: string) {
-    return this.prisma.user.delete({ where: { id } });
+  async delete(id: string) {
+    return await this.prisma.user.delete({ where: { id } });
   }
 }
