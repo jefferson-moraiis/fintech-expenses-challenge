@@ -12,7 +12,7 @@ export class UsersService {
     if (!user) {
       throw new InternalServerErrorException('Failed to create user');
     }
-    const { password, ...result } = user;
+    const { password: _, ...result } = user;
     return result;
   }
 
@@ -25,7 +25,7 @@ export class UsersService {
     if (!user) {
       throw new InternalServerErrorException('User not found');
     }
-    const { password, ...result } = user;
+    const { password: _, ...result } = user;
     return result;
   }
 
