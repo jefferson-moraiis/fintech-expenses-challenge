@@ -3,11 +3,11 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { ResponseInterceptor } from './common/interceptors/response/response.interceptor';
 import { HttpExceptionFilter } from './common/filters/http-exception/http-exception.filter';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { apiReference } from '@scalar/nestjs-api-reference';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  //TO-DO: habilitar para url do front depois
   app.enableCors({
     origin: true,
     credentials: true,
@@ -24,26 +24,30 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   const config = new DocumentBuilder()
-    .setTitle('Fintech Expenses API')
-    .setDescription('API de gestão financeira corporativa')
+    .setTitle('Fintech Expenses Challenge')
+    .setDescription('Fintech-expenses-challenge API description')
     .setVersion('1.0')
     .addBearerAuth(
       {
         type: 'http',
         scheme: 'bearer',
         bearerFormat: 'JWT',
-        description: 'Cole o access_token retornado pelo /auth/login',
+        description: 'Informe apenas o token',
       },
-      'access-token',
+      'JWT',
     )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document, {
-    swaggerOptions: {
-      persistAuthorization: true,
-    },
-  });
+  app.use(
+    '/reference',
+    apiReference({
+      content: document,
+      authentication: {
+        preferredSecurityScheme: 'JWT',
+      },
+    }),
+  );
 
   await app.listen(process.env.PORT ?? 3000);
 }
