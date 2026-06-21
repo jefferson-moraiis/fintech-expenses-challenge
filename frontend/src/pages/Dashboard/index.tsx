@@ -159,7 +159,7 @@ export default function DashboardPage() {
                           borderRadius: 8,
                           fontSize: 12,
                         }}
-                        formatter={(v: number) => fmt(v)}
+                        formatter={(v) => fmt(Number(v))}
                       />
                       <Area type="monotone" dataKey="entradas" stroke="currentColor" fill="url(#in)" strokeWidth={2} />
                       <Area type="monotone" dataKey="saidas" stroke="currentColor" className="text-muted-foreground" fill="url(#out)" strokeWidth={2} />

@@ -5,7 +5,6 @@ import DashboardPage from "@/pages/Dashboard";
 import { PrivateRoute } from "./PrivateRoute";
 import TransactionPage from "@/pages/Transactions";
 import CategoriesPage from "@/pages/Categories";
-import RegisterPage from "@/pages/Register";
 
 export function AppRoutes() {
   return (
@@ -34,14 +33,6 @@ export function AppRoutes() {
           element={
             <PrivateRoute>
               <CategoriesPage />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <PrivateRoute>
-              <RegisterPage />
             </PrivateRoute>
           }
         />

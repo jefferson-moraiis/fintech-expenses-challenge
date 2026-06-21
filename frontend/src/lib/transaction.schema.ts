@@ -10,7 +10,7 @@ export const transactionSchema = z.object({
     .min(1, 'Valor é obrigatório')
     .refine((v) => !isNaN(parseFloat(v)) && parseFloat(v) > 0, 'Valor deve ser positivo'),
   type: z.enum(['INCOME', 'EXPENSE'], {
-    required_error: 'Selecione o tipo',
+    message: 'Selecione o tipo',
   }),
   date: z.string().min(1, 'Data é obrigatória'),
   categoryId: z.string().uuid('Selecione uma categoria'),
