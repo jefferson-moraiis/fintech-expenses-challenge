@@ -1,73 +1,148 @@
-# React + TypeScript + Vite
+# Fintech Expenses — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface de gestão financeira corporativa construída com React e TypeScript.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 18** + **TypeScript**
+- **Vite** — bundler
+- **shadcn/ui** — componentes de UI
+- **Tailwind CSS** — estilização
+- **TanStack Query v5** — server state (cache, loading, refetch)
+- **React Hook Form** + **Zod** — formulários com validação tipada
+- **React Router v6** — roteamento com rotas protegidas
+- **Axios** — cliente HTTP com interceptor JWT
+- **Sonner** — toasts de feedback
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Decisão de estado
 
-## Expanding the ESLint configuration
+**React Query** para server state — dados que vêm da API (transações, categorias, dashboard). Oferece cache automático, invalidação por chave e estados de loading/error nativos sem boilerplate.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Context API** apenas para auth state — token e dados do usuário logado. É o único estado verdadeiramente global de cliente.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Essa separação evita Redux e mantém o código simples e idiomático.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Pré-requisitos
+
+- Node.js 20+
+- npm 10+
+- Backend rodando em `http://localhost:3000`
+
+---
+
+## Como rodar localmente
+
+### 1. Clone e instale as dependências
+
+```bash
+git clone https://github.com/jefferson-moraiis/fintech-expenses-challenge.git
+cd fintech-expenses-challenge
+cd frontend
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2. Configure as variáveis de ambiente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+cp .env.example .env
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+### 3. Inicie o servidor de desenvolvimento
+
+```bash
+npm run dev
+```
+
+Frontend em `http://localhost:5173`
+
+---
+
+## Variáveis de ambiente
+
+| Variável | Descrição | Padrão |
+|---|---|---|
+| `VITE_API_URL` | URL base da API | `http://localhost:3000` |
+
+---
+
+## Scripts
+
+```bash
+npm run dev        # servidor de desenvolvimento
+npm run build      # build de produção
+npm run preview    # preview do build
+npm run lint       # lint
+```
+
+---
+
+## Estrutura
+
+```
+src/
+├── api/                  # clientes Axios por recurso
+│   ├── auth.ts
+│   ├── categories.ts
+│   ├── transactions.ts
+│   ├── dashboard.ts
+│   └── client.ts         # instância Axios com interceptor JWT
+├── components/
+│   ├── ui/               # componentes shadcn/ui
+│   └── layout/           # componentes layout
+├── contexts/
+│   └── auth.context.tsx  # token + user + logout
+|   └── useAuth.ts
+├── hooks/                # hooks de React Query por recurso
+│   ├── use-auth.ts
+│   ├── use-categories.ts
+│   ├── use-dashboard.ts
+│   ├── use-mobile.ts
+│   └── use-transactions.ts
+├── pages/
+│   ├── Login/
+│   ├── Register/
+│   ├── Dashboard/
+│   ├── Transactions/
+│   └── Categories/
+├── types/                # interfaces TypeScript do domínio
+│   ├── auth.types.ts
+│   ├── category.types.ts
+│   ├── transaction.types.ts
+│   └── dashboard.types.ts
+├── App.tsx               # rotas + PrivateRoute
+└── main.tsx
+```
+
+---
+
+## Páginas
+
+| Rota | Descrição | Auth |
+|---|---|---|
+| `/login` | Autenticação | ❌ |
+| `/dashboard` | Saldo, entradas, saídas, top categorias | ✅ |
+| `/transactions` | Listagem com filtros e paginação | ✅ |
+| `/categories` | Gerenciamento de categorias | ✅ |
+
+---
+
+## Deploy
+
+Aplicação deployada em: **https://fintech-expenses-challenge-pi.vercel.app**
+
+---
+
+## Credenciais para teste
+
+```
+E-mail: admin@email.com
+Senha:  admin@123
 ```
