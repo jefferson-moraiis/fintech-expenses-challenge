@@ -40,9 +40,11 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   app.use(
-    '/docs',
+    '/reference',
     apiReference({
-      content: document,
+      spec: {
+        content: document,
+      },
       authentication: {
         preferredSecurityScheme: 'JWT',
       },
