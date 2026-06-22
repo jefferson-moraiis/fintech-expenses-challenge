@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Wallet } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 
 import {
   Card,
@@ -14,26 +15,29 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { useLogin } from '@/hooks/use-auth';             
-import { loginSchema } from '@/lib/auth.schema';         
-import type { LoginSchema } from '@/lib/auth.schema';  
+import { useRegister } from '@/hooks/use-auth';
+import { registerSchema } from '@/lib/auth.schema';
+import type { RegisterSchema } from '@/lib/auth.schema';
 
-function LoginPage() {
+function RegisterPage() {
   const navigate = useNavigate();
-  const { mutate: login, isPending, error } = useLogin(); 
+  const { mutate: registerUser, isPending } = useRegister();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
-    defaultValues: { email: '', password: '' },
+  } = useForm<RegisterSchema>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: { name: '', email: '', password: '' },
   });
 
-  const onSubmit = (data: LoginSchema) => {
-    login(data, {
-      onSuccess: () => navigate('/dashboard'),
+  const onSubmit = (data: RegisterSchema) => {
+    registerUser(data, {
+      onSuccess: () => {
+        toast.success('Conta criada com sucesso! Faça login para continuar.');
+        navigate('/login');
+      },
     });
   };
 
@@ -49,14 +53,27 @@ function LoginPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Entrar na sua conta</CardTitle>
+            <CardTitle>Criar sua conta</CardTitle>
             <CardDescription>
-              Use seu e-mail corporativo para continuar.
+              Preencha os dados para começar a usar a plataforma.
             </CardDescription>
           </CardHeader>
 
           <CardContent>
             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+              <div className="space-y-2">
+                <Label htmlFor="name">Nome</Label>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Seu nome"
+                  {...register('name')}
+                />
+                {errors.name && (
+                  <p className="text-sm text-destructive">{errors.name.message}</p>
+                )}
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email">E-mail</Label>
                 <Input
@@ -71,9 +88,7 @@ function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="password">Senha</Label>
-                </div>
+                <Label htmlFor="password">Senha</Label>
                 <Input
                   id="password"
                   type="password"
@@ -81,27 +96,20 @@ function LoginPage() {
                   {...register('password')}
                 />
                 {errors.password && (
-                  <p className="text-sm text-destructive">{errors.password.message}</p>
+                  <p className="text-sm text-destructive">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
-              {error && (
-                <p className="text-sm text-destructive">
-                  {(error as { response?: { data?: { message?: string } } })
-                    ?.response?.data?.message ?? 'Erro ao fazer login'}
-                </p>
-              )}
 
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? 'Entrando...' : 'Entrar'}
+                {isPending ? 'Criando conta...' : 'Criar conta'}
               </Button>
 
               <p className="text-center text-sm text-muted-foreground">
-                Não tem uma conta?{' '}
-                <Link
-                  to="/register"
-                  className="font-medium text-primary underline"
-                >
-                  Criar conta
+                Já tem uma conta?{' '}
+                <Link to="/login" className="font-medium text-primary underline">
+                  Entrar
                 </Link>
               </p>
             </form>
@@ -112,4 +120,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegisterPage;

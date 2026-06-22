@@ -10,7 +10,6 @@ import type {
 export const TRANSACTIONS_KEY = ['transactions'] as const;
 export const DASHBOARD_KEY = ['dashboard'] as const;
 
-// ── Listar com filtros e paginação ────────────────────────────
 export function useTransactions(filters?: TransactionFilters) {
   return useQuery({
     queryKey: [...TRANSACTIONS_KEY, filters],
@@ -18,7 +17,6 @@ export function useTransactions(filters?: TransactionFilters) {
   });
 }
 
-// ── Buscar por ID ─────────────────────────────────────────────
 export function useTransaction(id: string) {
   return useQuery({
     queryKey: [...TRANSACTIONS_KEY, id],
@@ -27,7 +25,6 @@ export function useTransaction(id: string) {
   });
 }
 
-// ── Criar ─────────────────────────────────────────────────────
 export function useCreateTransaction() {
   const queryClient = useQueryClient();
 
@@ -35,7 +32,6 @@ export function useCreateTransaction() {
     mutationFn: (payload: CreateTransactionPayload) =>
       transactionsApi.create(payload),
     onSuccess: () => {
-      // Invalida transações e dashboard para refletir o novo saldo
       queryClient.invalidateQueries({ queryKey: TRANSACTIONS_KEY });
       queryClient.invalidateQueries({ queryKey: DASHBOARD_KEY });
       toast.success('Transação criada com sucesso!');
@@ -47,7 +43,6 @@ export function useCreateTransaction() {
   });
 }
 
-// ── Atualizar ─────────────────────────────────────────────────
 export function useUpdateTransaction() {
   const queryClient = useQueryClient();
 
@@ -66,7 +61,6 @@ export function useUpdateTransaction() {
   });
 }
 
-// ── Remover ───────────────────────────────────────────────────
 export function useDeleteTransaction() {
   const queryClient = useQueryClient();
 
