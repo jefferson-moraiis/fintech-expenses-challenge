@@ -110,7 +110,7 @@ describe('CategoriesService', () => {
     });
 
     it('should throw ConflictException if name already exists', async () => {
-      mockPrisma.category.findFirst.mockResolvedValueOnce(mockCategory); // findOne OK
+      mockPrisma.category.findFirst.mockResolvedValueOnce(mockCategory);
 
       mockPrisma.category.findUnique.mockResolvedValueOnce({
         ...mockCategory,

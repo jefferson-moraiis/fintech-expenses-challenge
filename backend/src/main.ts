@@ -8,8 +8,9 @@ import { apiReference } from '@scalar/nestjs-api-reference';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const corsOrigin = process.env.CORS_ORIGIN;
   app.enableCors({
-    origin: true,
+    origin: corsOrigin ? corsOrigin.split(',').map((o) => o.trim()) : true,
     credentials: true,
   });
 

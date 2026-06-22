@@ -71,7 +71,6 @@ describe('Fintech API (e2e)', () => {
         })
         .expect(201);
 
-      // Ajuste conforme o formato da sua resposta
       categoryId = response.body.data?.id ?? response.body.id;
     });
 

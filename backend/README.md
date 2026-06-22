@@ -8,14 +8,14 @@ API REST de gestão financeira corporativa construída com NestJS e TypeScript.
 - **Prisma ORM** + **PostgreSQL**
 - **JWT** via `@nestjs/jwt` + `passport-jwt`
 - **class-validator** + **class-transformer**
-- **Scalar** em `/docs`
+- **Scalar** em `/reference`
 - **Docker Compose** para o banco local
 
 ---
 
 ## Pré-requisitos
 
-- Node.js 20+
+- Node.js 20.19+ / 22+ (exigido pelo Prisma 7)
 - npm 10+
 - Docker e Docker Compose
 
@@ -26,7 +26,7 @@ API REST de gestão financeira corporativa construída com NestJS e TypeScript.
 ### 1. Clone e instale as dependências
 
 ```bash
-git clone https://github.com/jefferson-moraiis/fintech-expenses-challenge.git
+git clone https://github.com/<seu-usuario>/fintech-expenses-challenge.git
 cd fintech-expenses-challenge
 cd backend
 npm install
@@ -46,7 +46,7 @@ Edite o `.env` se necessário — os valores padrão já funcionam com o Docker 
 docker compose up -d
 ```
 
-PostgreSQL disponível em `localhost:5432`.  
+PostgreSQL disponível em `localhost:5435`.  
 Adminer (GUI) disponível em `http://localhost:8080`.
 
 ### 4. Execute as migrations
@@ -77,15 +77,16 @@ Scalar em `http://localhost:3000/reference`
 
 | Variável | Descrição | Padrão |
 |---|---|---|
-| `DATABASE_URL` | Connection string do PostgreSQL | `postgresql://fintech:fintech123@localhost:5432/fintech_db` |
+| `DATABASE_URL` | Connection string do PostgreSQL | `postgresql://postgres:postgres@localhost:5435/fintech_db` |
 | `JWT_SECRET` | Segredo para assinar tokens JWT | — |
 | `PORT` | Porta do servidor | `3000` |
-| `CORS_ORIGIN` | URL do frontend permitida pelo CORS | `http://localhost:5173` |
+| `CORS_ORIGIN` | Origem(ns) do frontend permitida(s) pelo CORS (vazio = todas) | `http://localhost:5173` |
 
 ```env
-DATABASE_URL="postgresql://fintech:fintech123@localhost:5432/fintech_db?schema=public"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5435/fintech_db?schema=public"
 JWT_SECRET="troque-em-producao"
 PORT=3000
+CORS_ORIGIN="http://localhost:5173"
 ```
 
 ---

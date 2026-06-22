@@ -15,6 +15,11 @@ const config: Config = {
     '^src/(.*)$': '<rootDir>/src/$1',
   },
 
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
+
+  collectCoverageFrom: ['src/**/*.(t|j)s'],
+  coverageDirectory: 'coverage',
+
   testEnvironment: 'node',
 };
 
