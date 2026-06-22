@@ -4,7 +4,7 @@ Interface de gestão financeira corporativa construída com React e TypeScript.
 
 ## Stack
 
-- **React 18** + **TypeScript**
+- **React 19** + **TypeScript** (strict)
 - **Vite** — bundler
 - **shadcn/ui** — componentes de UI
 - **Tailwind CSS** — estilização
@@ -28,7 +28,7 @@ Essa separação evita Redux e mantém o código simples e idiomático.
 
 ## Pré-requisitos
 
-- Node.js 20+
+- Node.js 20.19+ / 22+
 - npm 10+
 - Backend rodando em `http://localhost:3000`
 
@@ -90,7 +90,7 @@ npm run lint       # lint
 src/
 ├── api/                  # clientes Axios por recurso
 │   ├── auth.ts
-│   ├── categories.ts
+│   ├── category.ts
 │   ├── transactions.ts
 │   ├── dashboard.ts
 │   └── client.ts         # instância Axios com interceptor JWT
@@ -128,6 +128,7 @@ src/
 | Rota | Descrição | Auth |
 |---|---|---|
 | `/login` | Autenticação | ❌ |
+| `/register` | Cadastro de novo usuário | ❌ |
 | `/dashboard` | Saldo, entradas, saídas, top categorias | ✅ |
 | `/transactions` | Listagem com filtros e paginação | ✅ |
 | `/categories` | Gerenciamento de categorias | ✅ |
