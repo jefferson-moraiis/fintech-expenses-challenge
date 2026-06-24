@@ -26,7 +26,7 @@ API REST de gestão financeira corporativa construída com NestJS e TypeScript.
 ### 1. Clone e instale as dependências
 
 ```bash
-git clone https://github.com/<seu-usuario>/fintech-expenses-challenge.git
+git clone https://github.com/jefferson-moraiis/fintech-expenses-challenge.git
 cd fintech-expenses-challenge
 cd backend
 npm install
